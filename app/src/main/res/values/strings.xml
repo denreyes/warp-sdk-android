@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Exodus Warp</string>
+    <string name="app_name">Warp</string>
     <string name="label_id">Id</string>
     <string name="label_name">Name</string>
     <string name="label_age">Age</string>

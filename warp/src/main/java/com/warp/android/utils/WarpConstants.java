@@ -1,4 +1,4 @@
-package com.warp.android;
+package com.warp.android.utils;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;

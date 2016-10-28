@@ -1,8 +1,12 @@
-package com.warp.android;
+package com.warp.android.http;
 
-public class WarpUserResult<T> {
+import com.google.gson.annotations.SerializedName;
+
+public class Status<T> {
+
     private int status;
     private String message;
+    @SerializedName("result")
     private T result;
 
     public int getStatus() {
@@ -29,12 +33,4 @@ public class WarpUserResult<T> {
         this.result = result;
     }
 
-    @Override
-    public String toString() {
-        return "WarpResult{" +
-                "status=" + status +
-                ", message='" + message + '\'' +
-                ", result='" + result + '\'' +
-                '}';
-    }
 }
