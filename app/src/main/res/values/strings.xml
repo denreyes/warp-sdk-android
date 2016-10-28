@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Exodus Warp</string>
+    <string name="label_id">Id</string>
+    <string name="label_name">Name</string>
+    <string name="label_age">Age</string>
+    <string name="label_score">Score</string>
+    <string name="label_color">Color</string>
+
+    <string name="button_create">Create</string>
+    <string name="button_update">Update</string>
+    <string name="button_get">Get</string>
+    <string name="button_delete">Delete</string>
+</resources>
