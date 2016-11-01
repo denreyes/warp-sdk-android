@@ -1,8 +1,9 @@
 package com.warp.android.utils;
 
 import com.warp.android.Warp;
-import com.warp.android.http.WarpCallback;
-import com.warp.android.http.WarpPointer;
+import com.warp.android.http.WarpInterface;
+import com.warp.android.http.models.Pointer;
+import com.warp.android.http.models.Result;
 
 import java.util.HashMap;
 
@@ -39,7 +40,7 @@ public class WarpObject {
         }
 
         public Builder addPointer(String key, String className, int id) {
-            this.body.put(key, new WarpPointer(key, className, id));
+            this.body.put(key, new Pointer(key, className, id));
             return this;
         }
 
@@ -48,31 +49,79 @@ public class WarpObject {
             return this;
         }
 
-        public WarpObject save(WarpCallback callback) {
+        public Builder limit(int value) {
+            this.body.put("limit", value);
+            return this;
+        }
+
+        public Builder skip(int value) {
+            this.body.put("skip", value);
+            return this;
+        }
+
+        public Builder equalTo(String key, Object value) {
+            if(value instanceof String) {
+                this.body.put("where", String.format("{\"" + key + "\":{\"eq\":\"%s\"}}", value));
+            } else {
+                this.body.put("where", String.format("{\"" + key + "\":{\"eq\":%d}}", value));
+            }
+            return this;
+        }
+
+        public Builder notEqualTo(String key, Object value) {
+            if(value instanceof String) {
+                this.body.put("where", String.format("{\"" + key + "\":{\"neq\":\"%s\"}}", value));
+            } else {
+                this.body.put("where", String.format("{\"" + key + "\":{\"neq\":%d}}", value));
+            }
+            return this;
+        }
+
+        public Builder lessThan(String key, int value) {
+            this.body.put("where", String.format("{\"" + key + "\":{\"lt\":%d}}", value));
+            return this;
+        }
+
+        public Builder lessThanOrEqualTo(String key, int value) {
+            this.body.put("where", String.format("{\"" + key + "\":{\"lte\":%d}}", value));
+            return this;
+        }
+
+        public Builder greaterThan(String key, int value) {
+            this.body.put("where", String.format("{\"" + key + "\":{\"gt\":%d}}", value));
+            return this;
+        }
+
+        public Builder greaterThanOrEqualTo(String key, int value) {
+            this.body.put("where", String.format("{\"" + key + "\":{\"gte\":%d}}", value));
+            return this;
+        }
+
+        public WarpObject save(WarpInterface w) {
             object = create();
-            object.save(callback);
+            object.save(w);
             return object;
         }
 
-        public WarpObject save(String id, WarpCallback callback) {
+        public WarpObject save(String id, WarpInterface w) {
             object = create();
-            object.save(id, callback);
+            object.save(id, w);
             return object;
         }
 
-        public WarpObject find(WarpCallback callback) {
+        public WarpObject find(WarpInterface w) {
             object = create();
-            object.find(callback);
+            object.find(w);
             return object;
         }
 
-        public WarpObject findById(String id, WarpCallback callback) {
+        public WarpObject findById(String id, WarpInterface w) {
             object = create();
-            object.findById(id, callback);
+            object.findById(id, w);
             return object;
         }
 
-        public WarpObject destroy(WarpCallback callback) {
+        public WarpObject destroy(WarpInterface w) {
             object = create();
             return object;
         }
@@ -89,112 +138,112 @@ public class WarpObject {
         this.warp = Warp.getInstance();
     }
 
-    public void save(final WarpCallback callback) {
-        warp.getWarpService().insert(sessionToken, className, body)
+    public void save(final WarpInterface w) {
+        warp.getWarpService().create(sessionToken, className, body)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<WarpResult>() {
+                .subscribe(new Subscriber<Result>() {
                     @Override
                     public void onCompleted() {
-                        callback.onCompleted();
+                        w.onCompleted();
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        callback.onError(e);
+                        w.onError(e);
                     }
 
                     @Override
-                    public void onNext(WarpResult result) {
-                        callback.onSuccess(result);
+                    public void onNext(Result result) {
+                        w.onSuccess(result);
                     }
                 });
     }
 
-    public void save(String id, final WarpCallback callback) {
+    public void save(String id, final WarpInterface w) {
         warp.getWarpService().update(sessionToken, className, id, body)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<WarpResult>() {
+                .subscribe(new Subscriber<Result>() {
                     @Override
                     public void onCompleted() {
-                        callback.onCompleted();
+                        w.onCompleted();
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        callback.onError(e);
+                        w.onError(e);
                     }
 
                     @Override
-                    public void onNext(WarpResult result) {
-                        callback.onSuccess(result);
+                    public void onNext(Result result) {
+                        w.onSuccess(result);
                     }
                 });
     }
 
-    public void find(final WarpCallback callback) {
-        warp.getWarpService().findAll(sessionToken, className, body)
+    public void find(final WarpInterface w) {
+        warp.getWarpService().retrieve(sessionToken, className, body)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<WarpResult>() {
+                .subscribe(new Subscriber<Result>() {
                     @Override
                     public void onCompleted() {
-                        callback.onCompleted();
+                        w.onCompleted();
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        callback.onError(e);
+                        w.onError(e);
                     }
 
                     @Override
-                    public void onNext(WarpResult result) {
-                        callback.onSuccess(result);
+                    public void onNext(Result result) {
+                        w.onSuccess(result);
                     }
                 });
     }
 
-    public void findById(String id, final WarpCallback callback) {
+    public void findById(String id, final WarpInterface w) {
         warp.getWarpService().first(sessionToken, className, id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<WarpResult>() {
+                .subscribe(new Subscriber<Result>() {
                     @Override
                     public void onCompleted() {
-                        callback.onCompleted();
+                        w.onCompleted();
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        callback.onError(e);
+                        w.onError(e);
                     }
 
                     @Override
-                    public void onNext(WarpResult result) {
-                        callback.onSuccess(result);
+                    public void onNext(Result result) {
+                        w.onSuccess(result);
                     }
                 });
     }
 
-    public void destroy(String id, final WarpCallback callback) {
+    public void destroy(String id, final WarpInterface w) {
         warp.getWarpService().delete(sessionToken, className, id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<WarpResult>() {
+                .subscribe(new Subscriber<Result>() {
                     @Override
                     public void onCompleted() {
-                        callback.onCompleted();
+                        w.onCompleted();
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        callback.onError(e);
+                        w.onError(e);
                     }
 
                     @Override
-                    public void onNext(WarpResult result) {
-                        callback.onSuccess(result);
+                    public void onNext(Result result) {
+                        w.onSuccess(result);
                     }
                 });
     }

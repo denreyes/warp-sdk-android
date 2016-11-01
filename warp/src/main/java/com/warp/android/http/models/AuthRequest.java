@@ -1,4 +1,4 @@
-package com.warp.android.http;
+package com.warp.android.http.models;
 
 public class AuthRequest {
 

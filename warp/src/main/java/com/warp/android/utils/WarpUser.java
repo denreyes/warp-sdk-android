@@ -6,10 +6,10 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.warp.android.Warp;
-import com.warp.android.http.AuthRequest;
-import com.warp.android.http.AuthResponse;
-import com.warp.android.http.Status;
-import com.warp.android.http.WarpCallback;
+import com.warp.android.http.models.AuthRequest;
+import com.warp.android.http.models.AuthResponse;
+import com.warp.android.http.models.Status;
+import com.warp.android.http.WarpInterface;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -23,7 +23,7 @@ public class WarpUser {
         warp = Warp.getInstance();
     }
 
-    public static void login(final Context con, String username, String password, final WarpCallback callback) {
+    public static void login(final Context con, String username, String password, final WarpInterface callback) {
         warp.getWarpService().login(new AuthRequest(username, password))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -49,7 +49,7 @@ public class WarpUser {
                 });
     }
 
-    public static void logout(String sessionToken, final WarpCallback callback) {
+    public static void logout(String sessionToken, final WarpInterface callback) {
         warp.getWarpService().logout(sessionToken)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

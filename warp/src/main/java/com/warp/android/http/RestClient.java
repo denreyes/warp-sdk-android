@@ -16,7 +16,7 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class WarpRestClient {
+public class RestClient {
 
     public static <T> T createApiService(final Class<T> clazz, final Context con, final String endpoint,
                                          final String apiKey, final String appVersion, final boolean isDebug) {

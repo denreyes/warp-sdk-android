@@ -2,7 +2,7 @@ package com.warp.android;
 
 import android.content.Context;
 
-import com.warp.android.http.WarpRestClient;
+import com.warp.android.http.RestClient;
 import com.warp.android.http.WarpService;
 
 public class Warp {
@@ -20,7 +20,7 @@ public class Warp {
         this.apiKey = apiKey;
         this.appVersion = appVersion;
         this.isDebug = isDebug;
-        warpService = WarpRestClient.createApiService(WarpService.class, this.context, this.url, this.apiKey, this.appVersion, isDebug);
+        warpService = RestClient.createApiService(WarpService.class, this.context, this.url, this.apiKey, this.appVersion, isDebug);
     }
 
     public static void initialize(Context context, String url, String apiKey, String appVersion, boolean isDebug) {

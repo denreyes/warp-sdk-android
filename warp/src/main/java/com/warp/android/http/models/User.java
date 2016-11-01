@@ -1,4 +1,4 @@
-package com.warp.android.http;
+package com.warp.android.http.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -24,7 +24,7 @@ public class User implements Parcelable {
     private String photo;
     @SerializedName("birthdate")
     private String birthDate;
-    private WarpPointer<Location> location;
+    private Pointer<Location> location;
 
     public User() {
     }
@@ -111,11 +111,11 @@ public class User implements Parcelable {
         this.gender = gender;
     }
 
-    public WarpPointer<Location> getLocation() {
+    public Pointer<Location> getLocation() {
         return location;
     }
 
-    public void setLocation(WarpPointer<Location> location) {
+    public void setLocation(Pointer<Location> location) {
         this.location = location;
     }
 

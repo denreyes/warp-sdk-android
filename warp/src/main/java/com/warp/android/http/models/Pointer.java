@@ -1,11 +1,11 @@
-package com.warp.android.http;
+package com.warp.android.http.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-public class WarpPointer<T> implements Parcelable {
+public class Pointer<T> implements Parcelable {
 
     private int id;
     private String type;
@@ -14,30 +14,30 @@ public class WarpPointer<T> implements Parcelable {
     @SerializedName("attributes")
     private T attribute;
 
-    public WarpPointer(String type, String className, int id) {
+    public Pointer(String type, String className, int id) {
         this.id = id;
         this.type = type;
         this.className = className;
     }
 
-    public WarpPointer() {
+    public Pointer() {
     }
 
-    protected WarpPointer(Parcel in) {
+    protected Pointer(Parcel in) {
         id = in.readInt();
         type = in.readString();
         className = in.readString();
     }
 
-    public static final Creator<WarpPointer> CREATOR = new Creator<WarpPointer>() {
+    public static final Creator<Pointer> CREATOR = new Creator<Pointer>() {
         @Override
-        public WarpPointer createFromParcel(Parcel in) {
-            return new WarpPointer(in);
+        public Pointer createFromParcel(Parcel in) {
+            return new Pointer(in);
         }
 
         @Override
-        public WarpPointer[] newArray(int size) {
-            return new WarpPointer[size];
+        public Pointer[] newArray(int size) {
+            return new Pointer[size];
         }
     };
 

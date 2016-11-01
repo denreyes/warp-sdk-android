@@ -8,9 +8,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.warp.android.Warp;
-import com.warp.android.http.WarpCallback;
+import com.warp.android.http.WarpInterface;
 import com.warp.android.utils.WarpObject;
-import com.warp.android.utils.WarpResult;
+import com.warp.android.http.models.Result;
 import com.warp.android.utils.WarpSessions;
 import com.warp.android.utils.WarpUser;
 
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                WarpUser.login(MainActivity.this, etUsername.getText().toString(), etPassword.getText().toString(), new WarpCallback() {
+                WarpUser.login(MainActivity.this, etUsername.getText().toString(), etPassword.getText().toString(), new WarpInterface() {
                     @Override
                     public void onCompleted() {
                     }
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onSuccess(WarpResult result) {
+                    public void onSuccess(Result result) {
                         Toast.makeText(getApplicationContext(), result.getResult().toString(), Toast.LENGTH_LONG).show();
                     }
                 });
@@ -61,9 +61,9 @@ public class MainActivity extends AppCompatActivity {
         btnGetUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                WarpObject object = new WarpObject.Builder()
+                new WarpObject.Builder()
                         .setClassName("users")
-                        .findById(WarpSessions.getUserId(MainActivity.this) + "?include=[\"location.address\", \"location.city\", \"location.province\"]", new WarpCallback() {
+                        .findById(WarpSessions.getUserId(MainActivity.this) + "?include=[\"location.address\", \"location.city\", \"location.province\"]", new WarpInterface() {
                             @Override
                             public void onCompleted() {
                             }
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                             }
 
                             @Override
-                            public void onSuccess(WarpResult result) {
+                            public void onSuccess(Result result) {
                                 Toast.makeText(MainActivity.this, result.getResult().size(), Toast.LENGTH_LONG);
                             }
                         });

@@ -1,4 +1,4 @@
-package com.warp.android.http;
+package com.warp.android.http.models;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -7,13 +7,13 @@ public class AuthResponse {
     @SerializedName("session_token")
     private String token;
     private int id;
-    private WarpPointer<User> user;
+    private Pointer<User> user;
 
-    public WarpPointer<User> getUser() {
+    public Pointer<User> getUser() {
         return user;
     }
 
-    public void setUser(WarpPointer<User> user) {
+    public void setUser(Pointer<User> user) {
         this.user = user;
     }
 

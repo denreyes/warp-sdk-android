@@ -1,6 +1,9 @@
 package com.warp.android.http;
 
-import com.warp.android.utils.WarpResult;
+import com.warp.android.http.models.AuthRequest;
+import com.warp.android.http.models.AuthResponse;
+import com.warp.android.http.models.Status;
+import com.warp.android.http.models.Result;
 
 import java.util.HashMap;
 
@@ -23,30 +26,30 @@ public interface WarpService {
     Observable<Status<AuthResponse>> logout(@Header("X-Warp-Session-Token") String token);
 
     @POST("{className}")
-    Observable<WarpResult> insert(@Header("X-Warp-Session-Token") String token,
-                                  @Path("className") String className,
-                                  @Body HashMap<String, Object> body);
+    Observable<Result> create(@Header("X-Warp-Session-Token") String token,
+                              @Path("className") String className,
+                              @Body HashMap<String, Object> body);
 
     @GET("{className}")
-    Observable<WarpResult> findAll(@Header("X-Warp-Session-Token") String token,
-                                   @Path("className") String endpoint,
-                                   @QueryMap HashMap<String, Object> constraint);
+    Observable<Result> retrieve(@Header("X-Warp-Session-Token") String token,
+                                @Path("className") String endpoint,
+                                @QueryMap HashMap<String, Object> constraint);
 
     @GET("{className}/{id}")
-    Observable<WarpResult> first(@Header("X-Warp-Session-Token") String token,
-                                 @Path("className") String endpoint,
-                                 @Path("id") String id);
+    Observable<Result> first(@Header("X-Warp-Session-Token") String token,
+                             @Path("className") String endpoint,
+                             @Path("id") String id);
 
     @PUT("{className}/{id}")
-    Observable<WarpResult> update(
+    Observable<Result> update(
             @Header("X-Warp-Session-Token") String token,
             @Path("className") String endpoint,
             @Path("id") String id,
             @Body HashMap<String, Object> body);
 
     @DELETE("{className}/{id}")
-    Observable<WarpResult> delete(@Header("X-Warp-Session-Token") String token,
-                                  @Path("className") String endpoint,
-                                  @Path("id") String id);
+    Observable<Result> delete(@Header("X-Warp-Session-Token") String token,
+                              @Path("className") String endpoint,
+                              @Path("id") String id);
 
 }

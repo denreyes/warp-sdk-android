@@ -1,14 +1,13 @@
-package com.warp.android.utils;
+package com.warp.android.http.models;
 
-import org.json.JSONObject;
+import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
-
-public class WarpResult {
+public class Status<T> {
 
     private int status;
     private String message;
-    private ArrayList<JSONObject> result;
+    @SerializedName("result")
+    private T result;
 
     public int getStatus() {
         return status;
@@ -26,11 +25,12 @@ public class WarpResult {
         this.message = message;
     }
 
-    public ArrayList<JSONObject> getResult() {
+    public T getResult() {
         return result;
     }
 
-    public void setResult(ArrayList<JSONObject> result) {
+    public void setResult(T result) {
         this.result = result;
     }
+
 }
