@@ -2,8 +2,10 @@ package com.warp.android.http;
 
 import com.warp.android.http.models.AuthRequest;
 import com.warp.android.http.models.AuthResponse;
+import com.warp.android.http.models.Location;
 import com.warp.android.http.models.Status;
 import com.warp.android.http.models.Result;
+import com.warp.android.http.models.User;
 
 import java.util.HashMap;
 
@@ -24,6 +26,12 @@ public interface WarpService {
 
     @POST("logout")
     Observable<Status<AuthResponse>> logout(@Header("X-Warp-Session-Token") String token);
+
+    @POST("users")
+    Observable<Status<User>> register(@Body User user);
+
+    @POST("classes/location")
+    Observable<Result> createLocation(@Body Location location);
 
     @POST("{className}")
     Observable<Result> create(@Header("X-Warp-Session-Token") String token,

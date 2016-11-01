@@ -2,13 +2,11 @@ package com.warp.android.http.models;
 
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
 public class Result {
 
     private int status;
     private String message;
-    private ArrayList<JSONObject> result;
+    private JSONObject result;
 
     public int getStatus() {
         return status;
@@ -26,11 +24,11 @@ public class Result {
         this.message = message;
     }
 
-    public ArrayList<JSONObject> getResult() {
+    public JSONObject getResult() {
         return result;
     }
 
-    public void setResult(ArrayList<JSONObject> result) {
+    public void setResult(JSONObject result) {
         this.result = result;
     }
 }
