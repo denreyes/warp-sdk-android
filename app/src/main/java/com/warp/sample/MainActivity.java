@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         etUrl.setText("http://stg.api.swiperxapp.com/api/1/");
         etWarpKey.setText("130rfenj1389eu398uhfr3198f");
 
-        Warp.initialize(MainActivity.this, etUrl.getText().toString(), etWarpKey.getText().toString(), "1.0.0", true);
+        Warp.init(MainActivity.this, etUrl.getText().toString(), etWarpKey.getText().toString(), "1.0.0", true);
 
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(new View.OnClickListener() {

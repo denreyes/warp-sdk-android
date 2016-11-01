@@ -23,7 +23,7 @@ public class Warp {
         warpService = RestClient.createApiService(WarpService.class, this.context, this.url, this.apiKey, this.appVersion, isDebug);
     }
 
-    public static void initialize(Context context, String url, String apiKey, String appVersion, boolean isDebug) {
+    public static void init(Context context, String url, String apiKey, String appVersion, boolean isDebug) {
         warp = new Warp(context, url, apiKey, appVersion, isDebug);
     }
 
