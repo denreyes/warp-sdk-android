@@ -2,8 +2,10 @@ package com.warp.android.utils;
 
 import com.warp.android.Warp;
 import com.warp.android.http.WarpInterface;
+import com.warp.android.http.WarpListInterface;
 import com.warp.android.http.models.Pointer;
 import com.warp.android.http.models.Result;
+import com.warp.android.http.models.ResultList;
 
 import java.util.HashMap;
 
@@ -49,6 +51,11 @@ public class WarpObject {
             return this;
         }
 
+        public Builder include(String value) {
+            this.body.put("include", "[" + value + "]");
+            return this;
+        }
+
         public Builder limit(int value) {
             this.body.put("limit", value);
             return this;
@@ -60,7 +67,7 @@ public class WarpObject {
         }
 
         public Builder equalTo(String key, Object value) {
-            if(value instanceof String) {
+            if (value instanceof String) {
                 this.body.put("where", String.format("{\"" + key + "\":{\"eq\":\"%s\"}}", value));
             } else {
                 this.body.put("where", String.format("{\"" + key + "\":{\"eq\":%d}}", value));
@@ -69,7 +76,7 @@ public class WarpObject {
         }
 
         public Builder notEqualTo(String key, Object value) {
-            if(value instanceof String) {
+            if (value instanceof String) {
                 this.body.put("where", String.format("{\"" + key + "\":{\"neq\":\"%s\"}}", value));
             } else {
                 this.body.put("where", String.format("{\"" + key + "\":{\"neq\":%d}}", value));
@@ -97,6 +104,18 @@ public class WarpObject {
             return this;
         }
 
+        public WarpObject functions(WarpInterface w) {
+            object = create();
+            object.functions(w);
+            return object;
+        }
+
+        public WarpObject functionsList(WarpListInterface w) {
+            object = create();
+            object.functionsList(w);
+            return object;
+        }
+
         public WarpObject save(WarpInterface w) {
             object = create();
             object.save(w);
@@ -109,7 +128,7 @@ public class WarpObject {
             return object;
         }
 
-        public WarpObject find(WarpInterface w) {
+        public WarpObject find(WarpListInterface w) {
             object = create();
             object.find(w);
             return object;
@@ -136,6 +155,50 @@ public class WarpObject {
         this.sessionToken = builder.sessionToken;
         this.body = builder.body;
         this.warp = Warp.getInstance();
+    }
+
+    public void functions(final WarpInterface w) {
+        warp.getWarpService().functions(sessionToken, className, body)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Result>() {
+                    @Override
+                    public void onCompleted() {
+                        w.onCompleted();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        w.onError(e);
+                    }
+
+                    @Override
+                    public void onNext(Result result) {
+                        w.onSuccess(result);
+                    }
+                });
+    }
+
+    public void functionsList(final WarpListInterface w) {
+        warp.getWarpService().functionsList(sessionToken, className, body)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ResultList>() {
+                    @Override
+                    public void onCompleted() {
+                        w.onCompleted();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        w.onError(e);
+                    }
+
+                    @Override
+                    public void onNext(ResultList result) {
+                        w.onSuccess(result);
+                    }
+                });
     }
 
     public void save(final WarpInterface w) {
@@ -182,11 +245,11 @@ public class WarpObject {
                 });
     }
 
-    public void find(final WarpInterface w) {
+    public void find(final WarpListInterface w) {
         warp.getWarpService().retrieve(sessionToken, className, body)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Result>() {
+                .subscribe(new Subscriber<ResultList>() {
                     @Override
                     public void onCompleted() {
                         w.onCompleted();
@@ -198,7 +261,7 @@ public class WarpObject {
                     }
 
                     @Override
-                    public void onNext(Result result) {
+                    public void onNext(ResultList result) {
                         w.onSuccess(result);
                     }
                 });

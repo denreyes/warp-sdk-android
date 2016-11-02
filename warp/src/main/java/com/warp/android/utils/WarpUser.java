@@ -1,10 +1,6 @@
 package com.warp.android.utils;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.util.Log;
-
-import com.google.gson.Gson;
 import com.warp.android.Warp;
 import com.warp.android.http.models.AuthRequest;
 import com.warp.android.http.models.AuthResponse;
@@ -94,9 +90,27 @@ public class WarpUser {
                 });
     }
 
-    public static WarpUser getCurrentUser() {
-        SharedPreferences preferences = warp.getContext().getSharedPreferences("warp", Context.MODE_PRIVATE);
-        return new Gson().fromJson(preferences.getString("warp-user", ""), WarpUser.class);
-    }
+    public static void getUserById(final Context con, String id, final WarpInterface callback) {
+        warp.getWarpService().getUserById(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Status<User>>() {
+                    @Override
+                    public void onCompleted() {
+                        callback.onCompleted();
+                    }
 
+                    @Override
+                    public void onError(Throwable e) {
+                        callback.onError(e);
+                    }
+
+                    @Override
+                    public void onNext(Status<User> a) {
+                        if(a.getStatus() == 200) {
+                            WarpSessions.setSession(con, "user_id", String.valueOf(a.getResult().getId()));
+                        }
+                    }
+                });
+    }
 }

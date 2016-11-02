@@ -3,10 +3,12 @@ package com.warp.android.http;
 import com.warp.android.http.models.AuthRequest;
 import com.warp.android.http.models.AuthResponse;
 import com.warp.android.http.models.Location;
+import com.warp.android.http.models.ResultList;
 import com.warp.android.http.models.Status;
 import com.warp.android.http.models.Result;
 import com.warp.android.http.models.User;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import retrofit2.http.Body;
@@ -30,32 +32,48 @@ public interface WarpService {
     @POST("users")
     Observable<Status<User>> register(@Body User user);
 
+    @GET("users?include=[\"location.address\", \"location.city\", \"location.province\"]")
+    Observable<Status<ArrayList<User>>> getUsers(@Header("X-Warp-Session-Token") String token, @QueryMap HashMap<String, Object> constraint);
+
+    @GET("users/{id}?include=[\"location.address\",\"location.city\",\"location.province\",\"location.latitude\",\"location.longitude\"]")
+    Observable<Status<User>> getUserById(@Path("id") String id);
+
+    @POST("functions/{className}")
+    Observable<Result> functions(@Header("X-Warp-Session-Token") String token,
+                              @Path("className") String className,
+                              @Body HashMap<String, Object> body);
+
+    @POST("functions/{className}")
+    Observable<ResultList> functionsList(@Header("X-Warp-Session-Token") String token,
+                                         @Path("className") String className,
+                                         @Body HashMap<String, Object> body);
+
     @POST("classes/location")
     Observable<Result> createLocation(@Body Location location);
 
-    @POST("{className}")
+    @POST("classes/{className}")
     Observable<Result> create(@Header("X-Warp-Session-Token") String token,
                               @Path("className") String className,
                               @Body HashMap<String, Object> body);
 
-    @GET("{className}")
-    Observable<Result> retrieve(@Header("X-Warp-Session-Token") String token,
+    @GET("classes/{className}")
+    Observable<ResultList> retrieve(@Header("X-Warp-Session-Token") String token,
                                 @Path("className") String endpoint,
                                 @QueryMap HashMap<String, Object> constraint);
 
-    @GET("{className}/{id}")
+    @GET("classes/{className}/{id}")
     Observable<Result> first(@Header("X-Warp-Session-Token") String token,
                              @Path("className") String endpoint,
                              @Path("id") String id);
 
-    @PUT("{className}/{id}")
+    @PUT("classes/{className}/{id}")
     Observable<Result> update(
             @Header("X-Warp-Session-Token") String token,
             @Path("className") String endpoint,
             @Path("id") String id,
             @Body HashMap<String, Object> body);
 
-    @DELETE("{className}/{id}")
+    @DELETE("classes/{className}/{id}")
     Observable<Result> delete(@Header("X-Warp-Session-Token") String token,
                               @Path("className") String endpoint,
                               @Path("id") String id);

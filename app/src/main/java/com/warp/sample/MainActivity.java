@@ -9,15 +9,16 @@ import android.widget.Toast;
 
 import com.warp.android.Warp;
 import com.warp.android.http.WarpInterface;
+import com.warp.android.http.WarpListInterface;
+import com.warp.android.http.models.ResultList;
 import com.warp.android.utils.WarpLocation;
 import com.warp.android.utils.WarpObject;
 import com.warp.android.http.models.Result;
-import com.warp.android.utils.WarpSessions;
 import com.warp.android.utils.WarpUser;
 
 public class MainActivity extends AppCompatActivity {
 
-    private EditText etUrl, etWarpKey, etUsername, etPassword, etEmail, etAddress, etCity, etProvince;
+    private EditText etUrl, etWarpKey, etUsername, etPassword, etEmail, etAddress, etCity, etProvince, etUserId;
     private Button btnLogin, btnRegister, btnGetUser, btnGetUserById, btnLocation;
 
     @Override
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         etPassword = (EditText) findViewById(R.id.etPassword);
         etEmail = (EditText) findViewById(R.id.etEmail);
 
+        etUserId = (EditText) findViewById(R.id.etUserId);
         etAddress = (EditText) findViewById(R.id.etAddress);
         etCity = (EditText) findViewById(R.id.etCity);
         etProvince = (EditText) findViewById(R.id.etProvince);
@@ -91,8 +93,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 new WarpObject.Builder()
-                        .setClassName("users")
-                        .findById(WarpSessions.getUserId(MainActivity.this) + "?include=[\"location.address\", \"location.city\", \"location.province\"]", new WarpInterface() {
+                        .setClassName("event")
+                        .include("\"location.address\", \"location.city\", \"location.province\"")
+                        .equalTo("description", "DSAP")
+                        .equalTo("title", "DSAP Convention")
+                        .find(new WarpListInterface() {
                             @Override
                             public void onCompleted() {
                             }
@@ -103,8 +108,8 @@ public class MainActivity extends AppCompatActivity {
                             }
 
                             @Override
-                            public void onSuccess(Result result) {
-                                Toast.makeText(MainActivity.this, result.getResult().toString(), Toast.LENGTH_LONG);
+                            public void onSuccess(ResultList result) {
+                                Toast.makeText(MainActivity.this, result.getResult().toString(), Toast.LENGTH_LONG).show();
                             }
                         });
             }
@@ -114,23 +119,21 @@ public class MainActivity extends AppCompatActivity {
         btnGetUserById.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new WarpObject.Builder()
-                        .setClassName("users")
-                        .findById(WarpSessions.getUserId(MainActivity.this) + "?include=[\"location.address\", \"location.city\", \"location.province\"]", new WarpInterface() {
-                            @Override
-                            public void onCompleted() {
-                            }
+                WarpUser.getUserById(MainActivity.this, etUserId.getText().toString(), new WarpInterface() {
+                    @Override
+                    public void onCompleted() {
+                    }
 
-                            @Override
-                            public void onError(Throwable e) {
-                                e.printStackTrace();
-                            }
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
 
-                            @Override
-                            public void onSuccess(Result result) {
-                                Toast.makeText(MainActivity.this, result.getResult().toString(), Toast.LENGTH_LONG);
-                            }
-                        });
+                    @Override
+                    public void onSuccess(Result result) {
+                        Toast.makeText(getApplicationContext(), result.getResult().toString(), Toast.LENGTH_LONG).show();
+                    }
+                });
             }
         });
 
