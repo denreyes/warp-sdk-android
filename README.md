@@ -1,8 +1,6 @@
 Warp SDK Android
 ================
 
-See [warp-server](https://github.com/jakejosol/warp-server) for more info about the implementation.
-
 Gradle
 
 ```java
@@ -41,6 +39,7 @@ Sample Usage
 
 Warp Server
 ===========
+See [warp-server](https://github.com/jakejosol/warp-server) for more info about the server implementation.
 
 __Warp Server__ is an `express` middleware for implementing scalable backend services. With Warp Server, you can store and manage data, call functions and run background processes using a simple REST API.
 
