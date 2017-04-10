@@ -5,7 +5,7 @@ group='com.github.ekimual'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.0"
+    buildToolsVersion "25.0.2"
 
     defaultConfig {
         minSdkVersion 9
@@ -26,12 +26,13 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'io.reactivex:rxjava:1.1.6'
+    compile 'io.reactivex:rxjava:1.2.7'
+    compile 'com.artemzin.rxjava:proguard-rules:1.2.7.0'
 
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
+    compile 'com.squareup.retrofit2:retrofit:2.2.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.2.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.2.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
 
     compile 'com.fasterxml.jackson.core:jackson-core:2.8.6'
     compile 'com.google.code.gson:gson:2.8.0'
