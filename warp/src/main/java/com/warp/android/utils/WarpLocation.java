@@ -3,7 +3,7 @@ package com.warp.android.utils;
 import android.content.Context;
 
 import com.warp.android.Warp;
-import com.warp.android.http.WarpInterface;
+import com.warp.android.http.interfaces.WarpMappedResultInterface;
 import com.warp.android.http.models.Location;
 import com.warp.android.http.models.Result;
 
@@ -19,7 +19,10 @@ public class WarpLocation {
         warp = Warp.getInstance();
     }
 
-    public static void saveLocation(final Context con, String address, String city, String province, final WarpInterface callback) {
+    public static void saveLocation(final Context con,
+                                    String address,
+                                    String city,
+                                    String province, final WarpMappedResultInterface callback) {
         warp.getWarpService().createLocation(new Location(address, city, province))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -31,12 +34,12 @@ public class WarpLocation {
 
                     @Override
                     public void onError(Throwable e) {
-                        callback.onError(e);
+                        callback.onError(WarpCallErrorHandler.getError(e));
                     }
 
                     @Override
                     public void onNext(Result a) {
-                        callback.onSuccess(a);
+                        callback.onSuccess(a.getResult());
                     }
                 });
     }
