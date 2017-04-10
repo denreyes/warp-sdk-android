@@ -1,17 +1,15 @@
 package com.warp.android.http.models;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.google.gson.annotations.SerializedName;
 
-public class User implements Parcelable {
+public class User<T> /*implements Parcelable*/ {
 
     private int id;
     private String sessionToken;
     private String username;
     private String password;
     private String email;
+    private T t;
 
     @SerializedName("first_name")
     private String firstName;
@@ -35,25 +33,25 @@ public class User implements Parcelable {
         this.email = email;
     }
 
-    protected User(Parcel in) {
-        id = in.readInt();
-        sessionToken = in.readString();
-        username = in.readString();
-        password = in.readString();
-        email = in.readString();
-    }
+//    protected User(Parcel in) {
+//        id = in.readInt();
+//        sessionToken = in.readString();
+//        username = in.readString();
+//        password = in.readString();
+//        email = in.readString();
+//    }
 
-    public static final Creator<User> CREATOR = new Creator<User>() {
-        @Override
-        public User createFromParcel(Parcel in) {
-            return new User(in);
-        }
-
-        @Override
-        public User[] newArray(int size) {
-            return new User[size];
-        }
-    };
+//    public static final Creator<User> CREATOR = new Creator<User>() {
+//        @Override
+//        public User createFromParcel(Parcel in) {
+//            return new User(in);
+//        }
+//
+//        @Override
+//        public User[] newArray(int size) {
+//            return new User[size];
+//        }
+//    };
 
     public int getId() {
         return id;
@@ -151,17 +149,17 @@ public class User implements Parcelable {
         this.middleName = middleName;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(id);
-        parcel.writeString(sessionToken);
-        parcel.writeString(username);
-        parcel.writeString(password);
-        parcel.writeString(email);
-    }
+//    @Override
+//    public int describeContents() {
+//        return 0;
+//    }
+//
+//    @Override
+//    public void writeToParcel(Parcel parcel, int i) {
+//        parcel.writeInt(id);
+//        parcel.writeString(sessionToken);
+//        parcel.writeString(username);
+//        parcel.writeString(password);
+//        parcel.writeString(email);
+//    }
 }
