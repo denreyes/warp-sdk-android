@@ -1,3 +1,11 @@
+Warp Server
+===========
+See [warp-server](https://github.com/jakejosol/warp-server) for more info about the server implementation.
+
+__Warp Server__ is an `express` middleware for implementing scalable backend services. With Warp Server, you can store and manage data, call functions and run background processes using a simple REST API.
+
+Currently, `Warp Server` uses `mysql`/`mariadb` as its database of choice, but can be extended to use other data storage providers.
+
 Warp SDK Android
 ================
 
@@ -36,14 +44,6 @@ Sample Usage
                     }
                 });
 ```
-
-Warp Server
-===========
-See [warp-server](https://github.com/jakejosol/warp-server) for more info about the server implementation.
-
-__Warp Server__ is an `express` middleware for implementing scalable backend services. With Warp Server, you can store and manage data, call functions and run background processes using a simple REST API.
-
-Currently, `Warp Server` uses `mysql`/`mariadb` as its database of choice, but can be extended to use other data storage providers.
 
 ## Table of Contents
 - **[Installation](#installation)**  
